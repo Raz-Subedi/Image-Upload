@@ -1,6 +1,5 @@
 package com.medium.UploadImage.Controller;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -33,9 +32,9 @@ public class ImageUploadController {
         try {
             // Save the file to the directory
             String filePath = saveImage(file);
-            return ResponseEntity.ok("Image uploaded successfully: " + filePath);
+            return ResponseEntity.ok("Image Uploaded Successfully: " + filePath);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading image");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Uploading Image");
         }
     }
 
