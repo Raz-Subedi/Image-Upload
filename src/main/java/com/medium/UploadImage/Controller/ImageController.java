@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/images")
-public class ImageControllerDb {
+public class ImageController {
 
 
     @Autowired
