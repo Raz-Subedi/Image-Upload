@@ -1,6 +1,8 @@
 package com.medium.UploadImage.Controller;
 
 import com.medium.UploadImage.service.FileSystemImageService;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/file/images")
@@ -48,5 +53,21 @@ public class FileSystemImageController {
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @GetMapping("/stream/{name}")
+    public ResponseEntity<Resource> streamImage(@PathVariable String name) throws IOException {
+        Path path = fileSystemImageService.getImagePath(name);
+        //Path path = Paths.get("uploads").resolve(imagePath);
+
+        if (!Files.exists(path)) return ResponseEntity.notFound().build();
+
+        Resource resource = new FileSystemResource(path);
+        String contentType = fileSystemImageService.getImageType(name);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + name + "\"")
+                .body(resource);
     }
 }
